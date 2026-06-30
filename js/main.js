@@ -1,7 +1,77 @@
 /* ===================================
-   ЮНИЛАБ — Modern Clean JS
-   Google Material 3 × Apple HIG
+   ЮНИЛАБ — Aurora Glass JS
+   Glassmorphism × Aurora Borealis
    =================================== */
+
+// ---- AURORA CANVAS ANIMATION ----
+function initAuroraCanvas() {
+    const canvas = document.getElementById('auroraCanvas');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    let w, h, dpr;
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    function resize() {
+        dpr = Math.min(window.devicePixelRatio || 1, 2);
+        w = canvas.offsetWidth;
+        h = canvas.offsetHeight;
+        canvas.width = w * dpr;
+        canvas.height = h * dpr;
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+    resize();
+    window.addEventListener('resize', resize);
+
+    // Aurora ribbons — flowing waves
+    const ribbons = [
+        { color: '0, 245, 212', amp: 60, freq: 0.006, speed: 0.00035, yOff: 0.28, thickness: 140, opacity: 0.14 },
+        { color: '155, 93, 229', amp: 80, freq: 0.005, speed: 0.00028, yOff: 0.45, thickness: 160, opacity: 0.12 },
+        { color: '0, 187, 249',  amp: 50, freq: 0.007, speed: 0.00040, yOff: 0.62, thickness: 120, opacity: 0.10 },
+        { color: '241, 91, 181', amp: 70, freq: 0.0055,speed: 0.00032, yOff: 0.38, thickness: 130, opacity: 0.09 },
+    ];
+
+    let t = 0;
+    function draw() {
+        ctx.clearRect(0, 0, w, h);
+        ribbons.forEach(rb => {
+            const baseY = h * rb.yOff;
+            ctx.beginPath();
+            ctx.moveTo(0, baseY);
+            for (let x = 0; x <= w; x += 4) {
+                const y = baseY +
+                    Math.sin(x * rb.freq + t * rb.speed * 1000) * rb.amp +
+                    Math.sin(x * rb.freq * 2.3 + t * rb.speed * 600) * rb.amp * 0.35;
+                ctx.lineTo(x, y);
+            }
+            ctx.lineTo(w, h);
+            ctx.lineTo(0, h);
+            ctx.closePath();
+
+            const grad = ctx.createLinearGradient(0, baseY - rb.thickness, 0, baseY + rb.thickness);
+            grad.addColorStop(0, `rgba(${rb.color}, 0)`);
+            grad.addColorStop(0.5, `rgba(${rb.color}, ${rb.opacity})`);
+            grad.addColorStop(1, `rgba(${rb.color}, 0)`);
+            ctx.fillStyle = grad;
+            ctx.fill();
+        });
+        t += 1;
+        rafId = requestAnimationFrame(draw);
+    }
+
+    let rafId = null;
+    if (!reduceMotion) {
+        draw();
+    }
+
+    // Pause when tab hidden
+    document.addEventListener('visibilitychange', () => {
+        if (document.hidden) {
+            if (rafId) { cancelAnimationFrame(rafId); rafId = null; }
+        } else if (!reduceMotion && !rafId) {
+            draw();
+        }
+    });
+}
 
 // ---- DATA ----
 const analyses = [
@@ -43,21 +113,22 @@ const audienceLabels = {
 // ---- STATE ----
 let cartCount = 0;
 
-// ---- THEME ----
+// ---- THEME (aurora intensity boost) ----
 function initTheme() {
     const saved = localStorage.getItem('ul-theme');
     const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    const theme = saved || (prefersDark ? 'dark' : 'light');
-    if (theme === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
+    // Default to "boosted" aurora if user prefers dark
+    const boost = saved ? (saved === 'dark') : prefersDark;
+    if (boost) document.documentElement.setAttribute('data-aurora', 'boost');
 }
 
 function toggleTheme() {
-    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-    if (isDark) {
-        document.documentElement.removeAttribute('data-theme');
+    const isBoosted = document.documentElement.getAttribute('data-aurora') === 'boost';
+    if (isBoosted) {
+        document.documentElement.removeAttribute('data-aurora');
         localStorage.setItem('ul-theme', 'light');
     } else {
-        document.documentElement.setAttribute('data-theme', 'dark');
+        document.documentElement.setAttribute('data-aurora', 'boost');
         localStorage.setItem('ul-theme', 'dark');
     }
 }
@@ -320,6 +391,7 @@ function initReveal() {
 
 // ---- INIT ----
 document.addEventListener('DOMContentLoaded', () => {
+    initAuroraCanvas();
     initTheme();
     document.getElementById('themeToggle')?.addEventListener('click', toggleTheme);
     initHeaderScroll();

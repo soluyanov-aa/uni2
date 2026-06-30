@@ -1,6 +1,5 @@
 /* ===================================
-   ЮНИЛАБ — Modern Clean JS
-   Google Material 3 × Apple HIG
+   ЮНИЛАБ — NEO-BRUTALIST EDITORIAL JS
    =================================== */
 
 // ---- DATA ----
@@ -43,29 +42,48 @@ const audienceLabels = {
 // ---- STATE ----
 let cartCount = 0;
 
-// ---- THEME ----
+// ---- AURORA CANVAS (disabled in brutalist — no canvas element) ----
+function initAurora() {
+    // No-op: brutalist design has no aurora background
+}
+
+// ---- THEME (brutalist is always light/paper — no toggle) ----
 function initTheme() {
-    const saved = localStorage.getItem('ul-theme');
-    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    const theme = saved || (prefersDark ? 'dark' : 'light');
-    if (theme === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
+    // Always paper background for brutalist design
+    document.documentElement.removeAttribute('data-theme');
 }
 
 function toggleTheme() {
-    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-    if (isDark) {
-        document.documentElement.removeAttribute('data-theme');
-        localStorage.setItem('ul-theme', 'light');
-    } else {
-        document.documentElement.setAttribute('data-theme', 'dark');
-        localStorage.setItem('ul-theme', 'dark');
+    // No-op: brutalist design is single-theme
+}
+
+// ---- LIVE CLOCK ----
+function initClock() {
+    const el = document.getElementById('liveClock');
+    if (!el) return;
+    function tick() {
+        const d = new Date();
+        const h = String(d.getHours()).padStart(2, '0');
+        const m = String(d.getMinutes()).padStart(2, '0');
+        el.textContent = `${h}:${m}`;
     }
+    tick();
+    setInterval(tick, 10000);
+}
+
+// ---- BOOT OVERLAY ----
+function initBoot() {
+    const boot = document.getElementById('boot');
+    if (!boot) return;
+    setTimeout(() => boot.classList.add('hidden'), 1300);
+    setTimeout(() => { if (boot.parentNode) boot.parentNode.removeChild(boot); }, 2000);
 }
 
 // ---- HEADER SCROLL ----
 function initHeaderScroll() {
     const appBar = document.getElementById('appBar');
     const fab = document.getElementById('fab');
+    if (!appBar || !fab) return;
     let ticking = false;
 
     function onScroll() {
@@ -320,7 +338,10 @@ function initReveal() {
 
 // ---- INIT ----
 document.addEventListener('DOMContentLoaded', () => {
+    initAurora();
     initTheme();
+    initBoot();
+    initClock();
     document.getElementById('themeToggle')?.addEventListener('click', toggleTheme);
     initHeaderScroll();
     initMobileMenu();

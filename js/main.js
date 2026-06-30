@@ -1,5 +1,5 @@
 /* ===================================
-   ЮНИЛАБ — Main JS
+   ЮНИЛАБ // MARS — Cyberpunk JS
    =================================== */
 
 // ---- DATA ----
@@ -94,13 +94,80 @@ const complexes = [
 ];
 
 const addresses = [
-    { name: 'Офис на Светланской', addr: 'ул. Светланская, 18', hours: 'Ежедневно 07:30–19:00' },
-    { name: 'Офис на Океанском', addr: 'пр-т Океанский, 98', hours: 'Пн–Сб 08:00–18:00' },
-    { name: 'Офис на Русской', addr: 'ул. Русская, 57', hours: 'Ежедневно 07:30–20:00' },
-    { name: 'Офис на Семёновской', addr: 'ул. Семёновская, 5', hours: 'Пн–Пт 07:30–19:00' },
-    { name: 'Офис на Нейбута', addr: 'ул. Нейбута, 33', hours: 'Ежедневно 08:00–18:00' },
-    { name: 'Офис на Гоголя', addr: 'ул. Гоголя, 41', hours: 'Пн–Сб 08:00–17:00' }
+    { name: 'Сектор Светланская', addr: 'ул. Светланская, 18', hours: 'Ежедневно 07:30–19:00' },
+    { name: 'Сектор Океанский', addr: 'пр-т Океанский, 98', hours: 'Пн–Сб 08:00–18:00' },
+    { name: 'Сектор Русская', addr: 'ул. Русская, 57', hours: 'Ежедневно 07:30–20:00' },
+    { name: 'Сектор Семёновская', addr: 'ул. Семёновская, 5', hours: 'Пн–Пт 07:30–19:00' },
+    { name: 'Сектор Нейбута', addr: 'ул. Нейбута, 33', hours: 'Ежедневно 08:00–18:00' },
+    { name: 'Сектор Гоголя', addr: 'ул. Гоголя, 41', hours: 'Пн–Сб 08:00–17:00' }
 ];
+
+// ---- MARS CANVAS: floating dust + stars ----
+class MarsCanvas {
+    constructor() {
+        this.canvas = document.getElementById('marsCanvas');
+        if (!this.canvas) return;
+        this.ctx = this.canvas.getContext('2d');
+        this.particles = [];
+        this.resize();
+        this.init();
+        window.addEventListener('resize', () => this.resize());
+        this.animate();
+    }
+
+    resize() {
+        this.canvas.width = window.innerWidth;
+        this.canvas.height = window.innerHeight;
+    }
+
+    init() {
+        const count = Math.floor((this.canvas.width * this.canvas.height) / 12000);
+        const colors = [
+            'rgba(255, 69, 0, ',   // mars glow
+            'rgba(255, 107, 26, ', // orange
+            'rgba(0, 240, 255, ',  // cyan
+            'rgba(255, 214, 10, ', // yellow
+            'rgba(255, 255, 255, ' // white star
+        ];
+        this.particles = [];
+        for (let i = 0; i < count; i++) {
+            this.particles.push({
+                x: Math.random() * this.canvas.width,
+                y: Math.random() * this.canvas.height,
+                vx: (Math.random() - 0.5) * 0.15,
+                vy: Math.random() * 0.1 + 0.05,
+                size: Math.random() * 1.8 + 0.4,
+                alpha: Math.random() * 0.5 + 0.1,
+                color: colors[Math.floor(Math.random() * colors.length)],
+                twinkle: Math.random() * Math.PI * 2
+            });
+        }
+    }
+
+    animate() {
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        this.particles.forEach(p => {
+            p.x += p.vx;
+            p.y += p.vy;
+            p.twinkle += 0.02;
+
+            // Wrap around
+            if (p.y > this.canvas.height + 5) {
+                p.y = -5;
+                p.x = Math.random() * this.canvas.width;
+            }
+            if (p.x > this.canvas.width + 5) p.x = -5;
+            if (p.x < -5) p.x = this.canvas.width + 5;
+
+            const flicker = 0.7 + Math.sin(p.twinkle) * 0.3;
+            this.ctx.beginPath();
+            this.ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+            this.ctx.fillStyle = p.color + (p.alpha * flicker) + ')';
+            this.ctx.fill();
+        });
+        requestAnimationFrame(() => this.animate());
+    }
+}
 
 // ---- HERO SLIDER ----
 class HeroSlider {
@@ -186,7 +253,7 @@ function renderProductCard(item) {
     const card = document.createElement('div');
     card.className = 'product-card';
     card.innerHTML = `
-        <span class="product-card__code">№ ${item.num}</span>
+        <span class="product-card__code">ID: ${item.num}</span>
         <h3 class="product-card__title">${item.title}</h3>
         <p class="product-card__desc">${item.desc}</p>
         <div class="product-card__footer">
@@ -265,7 +332,7 @@ function initSearch() {
         ).slice(0, 8);
 
         if (matches.length === 0) {
-            results.innerHTML = '<div class="search-result-item"><span class="search-result-item__title">Ничего не найдено</span></div>';
+            results.innerHTML = '<div class="search-result-item"><span class="search-result-item__title">Данные не найдены</span></div>';
         } else {
             results.innerHTML = matches.map(item => `
                 <div class="search-result-item" data-num="${item.num}">
@@ -326,12 +393,40 @@ function initDropdown() {
     });
 }
 
+// ---- GLITCH TEXT EFFECT ----
+function initGlitchEffect() {
+    const logoText = document.querySelector('.logo__text');
+    if (!logoText) return;
+    
+    const original = logoText.textContent;
+    const glitchChars = '!<>-_\\/[]{}—=+*^?#________';
+
+    logoText.addEventListener('mouseenter', () => {
+        let iterations = 0;
+        const interval = setInterval(() => {
+            logoText.textContent = original.split('').map((char, i) => {
+                if (i < iterations) return original[i];
+                return glitchChars[Math.floor(Math.random() * glitchChars.length)];
+            }).join('');
+
+            if (iterations >= original.length) {
+                clearInterval(interval);
+                logoText.textContent = original;
+            }
+
+            iterations += 1 / 2;
+        }, 40);
+    });
+}
+
 // ---- INIT ----
 document.addEventListener('DOMContentLoaded', () => {
+    new MarsCanvas();
     new HeroSlider();
     initTabs();
     initDropdown();
     initSearch();
+    initGlitchEffect();
     renderCards('analysesGrid', analyses);
     renderCards('complexesGrid', complexes);
     renderAddresses();

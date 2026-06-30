@@ -1,6 +1,7 @@
 /* ===================================
-   ЮНИЛАБ — Modern Clean JS
-   Google Material 3 × Apple HIG
+   ЮНИЛАБ — TESLA UI JS
+   Automotive HUD / Vehicle Control Aesthetic
+   Dark · Minimal · Tech-feel
    =================================== */
 
 // ---- DATA ----
@@ -25,12 +26,12 @@ const complexes = [
 ];
 
 const addresses = [
-    { name: 'Светланская',  addr: 'ул. Светланская, 18',  hours: 'Ежедневно 07:30–19:00' },
-    { name: 'Океанский',    addr: 'пр-т Океанский, 98',   hours: 'Пн–Сб 08:00–18:00' },
-    { name: 'Русская',      addr: 'ул. Русская, 57',      hours: 'Ежедневно 07:30–20:00' },
-    { name: 'Семёновская',  addr: 'ул. Семёновская, 5',   hours: 'Пн–Пт 07:30–19:00' },
-    { name: 'Нейбута',      addr: 'ул. Нейбута, 33',      hours: 'Ежедневно 08:00–18:00' },
-    { name: 'Гоголя',       addr: 'ул. Гоголя, 41',       hours: 'Пн–Сб 08:00–17:00' },
+    { name: 'Светланская',  addr: 'ул. Светланская, 18',  hours: 'Ежедневно 07:30–19:00', open: true },
+    { name: 'Океанский',    addr: 'пр-т Океанский, 98',   hours: 'Пн–Сб 08:00–18:00',    open: true },
+    { name: 'Русская',      addr: 'ул. Русская, 57',      hours: 'Ежедневно 07:30–20:00', open: true },
+    { name: 'Семёновская',  addr: 'ул. Семёновская, 5',   hours: 'Пн–Пт 07:30–19:00',    open: false },
+    { name: 'Нейбута',      addr: 'ул. Нейбута, 33',      hours: 'Ежедневно 08:00–18:00', open: true },
+    { name: 'Гоголя',       addr: 'ул. Гоголя, 41',       hours: 'Пн–Сб 08:00–17:00',    open: false },
 ];
 
 const audienceLabels = {
@@ -254,7 +255,7 @@ function renderCards(container, items) {
     items.forEach(item => container.appendChild(renderProductCard(item)));
 }
 
-// ---- RENDER ADDRESSES ----
+// ---- RENDER ADDRESSES (Sentry Mode status) ----
 function renderAddresses() {
     const container = document.getElementById('addressesGrid');
     if (!container) return;
@@ -262,6 +263,8 @@ function renderAddresses() {
     addresses.forEach(addr => {
         const card = document.createElement('div');
         card.className = 'address-card';
+        const statusClass = addr.open ? 'address-card__status--open' : 'address-card__status--closed';
+        const statusText = addr.open ? 'OPEN' : 'CLOSED';
         card.innerHTML = `
             <div class="address-card__header">
                 <div class="address-card__icon">
@@ -270,10 +273,11 @@ function renderAddresses() {
                 <span class="address-card__name">${addr.name}</span>
             </div>
             <p class="address-card__addr">${addr.addr}</p>
-            <div class="address-card__hours">
-                <span class="dot"></span>
-                <span>${addr.hours}</span>
+            <div class="address-card__status ${statusClass}">
+                <span class="sentry-dot"></span>
+                <span>${statusText}</span>
             </div>
+            <p class="address-card__hours-text">${addr.hours}</p>
         `;
         container.appendChild(card);
     });
@@ -318,6 +322,63 @@ function initReveal() {
     elements.forEach(el => observer.observe(el));
 }
 
+// ---- HERO GAUGES (battery / speedometer circular indicators) ----
+function initGauges() {
+    const gauges = document.querySelectorAll('.hero__gauge');
+    if (!gauges.length) return;
+
+    const radius = 42;
+    const circumference = 2 * Math.PI * radius;
+
+    gauges.forEach(gauge => {
+        const fill = gauge.querySelector('.gauge-fill');
+        const numEl = gauge.querySelector('.hero__gauge-num');
+        if (fill) {
+            fill.style.strokeDasharray = circumference;
+            fill.style.strokeDashoffset = circumference;
+        }
+    });
+
+    const animateGauge = (gauge) => {
+        const fill = gauge.querySelector('.gauge-fill');
+        const numEl = gauge.querySelector('.hero__gauge-num');
+        if (!fill || !numEl) return;
+        const percent = parseFloat(fill.dataset.percent) || 0;
+        const target = parseInt(numEl.dataset.count) || 0;
+        const offset = circumference - (percent / 100) * circumference;
+
+        // Animate ring
+        requestAnimationFrame(() => {
+            fill.style.strokeDashoffset = offset;
+        });
+
+        // Animate counter
+        const duration = 1800;
+        const startTime = performance.now();
+        function tick(now) {
+            const elapsed = now - startTime;
+            const progress = Math.min(elapsed / duration, 1);
+            const eased = 1 - Math.pow(1 - progress, 3);
+            const value = Math.round(target * eased);
+            numEl.textContent = value + (target >= 100 ? '+' : target >= 20 ? '+' : '');
+            if (progress < 1) requestAnimationFrame(tick);
+            else numEl.textContent = target + (target >= 100 ? '+' : target >= 20 ? '+' : '');
+        }
+        requestAnimationFrame(tick);
+    };
+
+    const gaugeObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                animateGauge(entry.target);
+                gaugeObserver.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.3 });
+
+    gauges.forEach(gauge => gaugeObserver.observe(gauge));
+}
+
 // ---- INIT ----
 document.addEventListener('DOMContentLoaded', () => {
     initTheme();
@@ -328,6 +389,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initTabs();
     initAudience();
     initReveal();
+    initGauges();
     renderCards(document.getElementById('analysesGrid'), analyses);
     renderCards(document.getElementById('complexesGrid'), complexes);
     renderAddresses();

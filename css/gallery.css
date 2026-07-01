@@ -1,0 +1,185 @@
+/* ============ GALLERY TOOLBAR ============ */
+.gallery-bar {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 0 16px;
+    background: rgba(15, 17, 21, 0.92);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    z-index: 10000;
+    transition: transform 0.3s cubic-bezier(.4,0,.2,1);
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    color: #e4e6eb;
+}
+.gallery-bar--hidden {
+    transform: translateY(-100%);
+}
+
+.gallery-bar__left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+}
+.gallery-bar__logo {
+    font-weight: 800;
+    font-size: 15px;
+    letter-spacing: -0.02em;
+    color: #fff;
+}
+.gallery-bar__sep {
+    width: 1px;
+    height: 20px;
+    background: rgba(255,255,255,0.12);
+}
+.gallery-bar__label {
+    font-size: 12px;
+    color: rgba(255,255,255,0.5);
+    white-space: nowrap;
+}
+
+/* ── Theme switcher (center) ── */
+.gallery-bar__themes {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    flex: 1;
+    justify-content: center;
+    padding: 0 4px;
+}
+.gallery-bar__themes::-webkit-scrollbar { display: none; }
+
+.theme-chip {
+    flex-shrink: 0;
+    padding: 6px 14px;
+    border-radius: 8px;
+    border: 1px solid transparent;
+    background: transparent;
+    color: rgba(255,255,255,0.55);
+    font-family: inherit;
+    font-size: 12.5px;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.15s ease;
+}
+.theme-chip:hover {
+    background: rgba(255,255,255,0.06);
+    color: rgba(255,255,255,0.9);
+}
+.theme-chip--active {
+    background: #3ECF8E;
+    color: #0a0a0a;
+    font-weight: 700;
+}
+
+/* ── Right controls ── */
+.gallery-bar__right {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    flex-shrink: 0;
+}
+.gallery-bar__btn {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    border: none;
+    background: transparent;
+    color: rgba(255,255,255,0.6);
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+.gallery-bar__btn:hover {
+    background: rgba(255,255,255,0.08);
+    color: #fff;
+}
+.gallery-bar__counter {
+    font-size: 12px;
+    font-variant-numeric: tabular-nums;
+    color: rgba(255,255,255,0.4);
+    min-width: 36px;
+    text-align: center;
+}
+.gallery-bar__btn--expand {
+    font-size: 16px;
+}
+
+/* ── Mini floating button ── */
+.gallery-mini {
+    position: fixed;
+    top: 12px;
+    right: 12px;
+    z-index: 10001;
+    padding: 8px 16px;
+    border-radius: 24px;
+    border: 1px solid rgba(255,255,255,0.15);
+    background: rgba(15, 17, 21, 0.92);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    color: #e4e6eb;
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 12.5px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.2s ease;
+}
+.gallery-mini:hover {
+    background: rgba(30, 33, 40, 0.95);
+    border-color: rgba(255,255,255,0.25);
+}
+
+/* ── iframe stage ── */
+.gallery-stage {
+    position: fixed;
+    top: 56px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow: hidden;
+}
+.gallery-stage iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+    background: #fff;
+}
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+    .gallery-bar {
+        padding: 0 8px;
+        gap: 8px;
+    }
+    .gallery-bar__left .gallery-bar__sep,
+    .gallery-bar__left .gallery-bar__label {
+        display: none;
+    }
+    .gallery-bar__right .gallery-bar__sep,
+    .gallery-bar__counter,
+    .gallery-bar__btn--expand {
+        display: none;
+    }
+    .gallery-bar__btn {
+        width: 28px;
+        height: 28px;
+    }
+    .theme-chip {
+        padding: 5px 10px;
+        font-size: 11.5px;
+    }
+}

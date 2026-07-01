@@ -48,18 +48,14 @@ function initTheme() {
     const saved = localStorage.getItem('ul-theme');
     const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
     const theme = saved || (prefersDark ? 'dark' : 'light');
-    if (theme === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
+    document.documentElement.setAttribute('data-theme', theme);
 }
 
 function toggleTheme() {
     const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-    if (isDark) {
-        document.documentElement.removeAttribute('data-theme');
-        localStorage.setItem('ul-theme', 'light');
-    } else {
-        document.documentElement.setAttribute('data-theme', 'dark');
-        localStorage.setItem('ul-theme', 'dark');
-    }
+    const next = isDark ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', next);
+    localStorage.setItem('ul-theme', next);
 }
 
 // ---- HEADER SCROLL ----

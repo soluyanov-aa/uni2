@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ЮНИЛАБ — Swiss Style</title>
+    <meta name="description" content="ЮНИЛАБ — клинико-диагностическая лаборатория. Анализы и комплексы для всей семьи.">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap rel="stylesheet">
+    <link rel="stylesheet" href="swiss.css">
+</head>
+<body>
+
+<!-- ============ HEADER ============ -->
+<header class="app-bar" id="appBar">
+    <div class="container app-bar__inner">
+        <a href="/" class="brand">
+            <div class="brand__mark">
+                <svg viewBox="0 0 40 40" width="32" height="32">
+                    <circle cx="20" cy="20" r="16" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.3"/>
+                    <circle cx="20" cy="20" r="11" fill="none" stroke="currentColor" stroke-width="2.5"/>
+                    <path d="M15 14v12M15 14l5 6 5-6v12" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </div>
+            <span class="brand__name">ЮНИЛАБ</span>
+        </a>
+
+        <nav class="nav-pills">
+            <a href="#analyses" class="nav-pill">Анализы</a>
+            <a href="#complexes" class="nav-pill">Комплексы</a>
+            <a href="#addresses" class="nav-pill">Адреса</a>
+            <a href="#info" class="nav-pill">О нас</a>
+        </nav>
+
+        <div class="app-bar__actions">
+            <button class="icon-btn" id="searchToggle" aria-label="Поиск">
+                <svg viewBox="0 0 24 24" width="22" height="22"><path fill="currentColor" d="M15.5 14h-.79l-.28-.27a6.5 6.5 0 001.48-5.34c-.47-2.78-2.79-5-5.59-5.34a6.505 6.505 0 00-7.27 7.27c.34 2.8 2.56 5.12 5.34 5.59a6.5 6.5 0 005.34-1.48l.27.28v.79l4.25 4.25c.41.41 1.08.41 1.49 0 .41-.41.41-1.08 0-1.49L15.5 14zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+            </button>
+            <button class="icon-btn" id="themeToggle" aria-label="Тема">
+                <svg viewBox="0 0 24 24" width="22" height="22" id="themeIcon"><path fill="currentColor" d="M12 7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zM12 0l-4 4 4 4V0zm0 24l4-4-4-4v8zM2.34 9.5L0 12l2.34 2.5L4.84 12 2.34 9.5zm19.32 5L24 12l-2.34-2.5L19.16 12l2.5 2.5z"/></svg>
+            </button>
+            <a href="#" class="icon-btn icon-btn--cart" aria-label="Корзина">
+                <svg viewBox="0 0 24 24" width="22" height="22"><path fill="currentColor" d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
+                <span class="cart-badge" id="cartBadge">0</span>
+            </a>
+            <a href="#" class="btn btn--filled header__cta">Записаться</a>
+            <button class="icon-btn icon-btn--menu" id="menuToggle" aria-label="Меню">
+                <svg viewBox="0 0 24 24" width="24" height="24"><path fill="currentColor" d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+            </button>
+        </div>
+    </div>
+
+    <!-- Expandable search -->
+    <div class="search-expand" id="searchExpand">
+        <div class="container">
+            <div class="search-expand__inner">
+                <svg class="search-expand__icon" viewBox="0 0 24 24" width="20" height="20"><path fill="currentColor" d="M15.5 14h-.79l-.28-.27a6.5 6.5 0 001.48-5.34c-.47-2.78-2.79-5-5.59-5.34a6.505 6.505 0 00-7.27 7.27c.34 2.8 2.56 5.12 5.34 5.59a6.5 6.5 0 005.34-1.48l.27.28v.79l4.25 4.25c.41.41 1.08.41 1.49 0 .41-.41.41-1.08 0-1.49L15.5 14zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+                <input type="text" class="search-expand__input" placeholder="Поиск анализов и комплексов..." id="globalSearch">
+                <button class="search-expand__close" id="searchClose">Отмена</button>
+            </div>
+            <div class="search-results" id="searchResults"></div>
+        </div>
+    </div>
+</header>
+
+<!-- Mobile menu -->
+<div class="mobile-menu" id="mobileMenu">
+    <div class="mobile-menu__body">
+        <a href="#analyses" class="mobile-menu__link">Анализы</a>
+        <a href="#complexes" class="mobile-menu__link">Комплексы</a>
+        <a href="#addresses" class="mobile-menu__link">Адреса</a>
+        <a href="#info" class="mobile-menu__link">О нас</a>
+        <a href="#" class="mobile-menu__link">Врачи</a>
+        <a href="#" class="mobile-menu__link">Акции</a>
+        <a href="#" class="mobile-menu__link">Личный кабинет</a>
+    </div>
+</div>
+
+<!-- ============ HERO ============ -->
+<section class="hero" id="hero">
+    <div class="hero__bg"></div>
+    <div class="container hero__inner">
+        <div class="hero__content reveal">
+            <div class="hero__eyebrow">Медицинская лаборатория</div>
+            <h1 class="hero__title">Забота о здоровье<br>всей семьи</h1>
+            <p class="hero__subtitle">Более 500 видов анализов. Точные результаты. Современное оборудование. Онлайн-запись день в день.</p>
+            <div class="hero__actions">
+                <a href="#analyses" class="btn btn--filled btn--lg">Найти анализ</a>
+                <a href="#" class="btn btn--tonal btn--lg">Онлайн-запись</a>
+            </div>
+            <div class="hero__trust">
+                <div class="hero__trust-item">
+                    <span class="hero__trust-num">20+</span>
+                    <span class="hero__trust-label">лет опыта</span>
+                </div>
+                <div class="hero__trust-divider"></div>
+                <div class="hero__trust-item">
+                    <span class="hero__trust-num">500+</span>
+                    <span class="hero__trust-label">анализов</span>
+                </div>
+                <div class="hero__trust-divider"></div>
+                <div class="hero__trust-item">
+                    <span class="hero__trust-num">6</span>
+                    <span class="hero__trust-label">офисов в городе</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============ AUDIENCE SELECTOR ============ -->
+<section class="audience" id="audience">
+    <div class="container">
+        <div class="reveal">
+            <h2 class="section-title section-title--center">Подберите анализы</h2>
+            <p class="section-subtitle section-subtitle--center">Выберите, для кого подбираете исследование</p>
+        </div>
+        <div class="audience__grid reveal">
+            <button class="audience-card" data-audience="women">
+                <div class="audience-card__icon audience-card__icon--women">
+                    <svg viewBox="0 0 24 24" width="28" height="28"><path fill="currentColor" d="M12 4c-1.93 0-3.5 1.57-3.5 3.5S10.07 11 12 11s3.5-1.57 3.5-3.5S13.93 4 12 4zm0 9c-2.33 0-7 1.17-7 3.5V19c0 .55.45 1 1 1h12c.55 0 1-.45 1-1v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
+                </div>
+                <span class="audience-card__label">Для женщин</span>
+            </button>
+            <button class="audience-card" data-audience="men">
+                <div class="audience-card__icon audience-card__icon--men">
+                    <svg viewBox="0 0 24 24" width="28" height="28"><path fill="currentColor" d="M14 7c0-1.1-.9-2-2-2s-2 .9-2 2 .9 2 2 2 2-.9 2-2zm-2 4c-2.33 0-7 1.17-7 3.5V17h1v5h12v-5h1v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
+                </div>
+                <span class="audience-card__label">Для мужчин</span>
+            </button>
+            <button class="audience-card" data-audience="children">
+                <div class="audience-card__icon audience-card__icon--children">
+                    <svg viewBox="0 0 24 24" width="28" height="28"><path fill="currentColor" d="M12 2C7.58 2 4 5.58 4 10v8c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2v-8c0-4.42-3.58-8-8-8zm-3 9c-.83 0-1.5-.67-1.5-1.5S8.17 8 9 8s1.5.67 1.5 1.5S9.83 11 9 11zm6 0c-.83 0-1.5-.67-1.5-1.5S14.17 8 15 8s1.5.67 1.5 1.5S15.83 11 15 11z"/></svg>
+                </div>
+                <span class="audience-card__label">Для детей</span>
+            </button>
+            <button class="audience-card" data-audience="seniors">
+                <div class="audience-card__icon audience-card__icon--seniors">
+                    <svg viewBox="0 0 24 24" width="28" height="28"><path fill="currentColor" d="M11.5 2C7.36 2 4 5.36 4 9.5c0 2.73 1.46 5.11 3.64 6.45L7 22h9l-.64-6.05C17.54 14.61 19 12.23 19 9.5 19 5.36 15.64 2 11.5 2z"/></svg>
+                </div>
+                <span class="audience-card__label">Для пожилых</span>
+            </button>
+        </div>
+
+        <!-- Filtered results -->
+        <div class="audience-results" id="audienceResults" style="display:none">
+            <div class="audience-results__header">
+                <h3 class="audience-results__title" id="audienceResultsTitle"></h3>
+                <button class="btn btn--text" id="audienceReset">Сбросить</button>
+            </div>
+            <div class="cards-grid" id="audienceGrid"></div>
+        </div>
+    </div>
+</section>
+
+<!-- ============ POPULAR TESTS ============ -->
+<section class="section" id="analyses">
+    <div class="container">
+        <div class="section-head reveal">
+            <div>
+                <h2 class="section-title">Популярные анализы</h2>
+                <p class="section-subtitle">Самые востребованные исследования этого месяца</p>
+            </div>
+            <div class="segmented" id="testTabs">
+                <button class="segmented__btn active" data-tab="analyses">Анализы</button>
+                <button class="segmented__btn" data-tab="complexes">Комплексы</button>
+            </div>
+        </div>
+
+        <div class="tab-panel active" data-panel="analyses">
+            <div class="cards-grid" id="analysesGrid"></div>
+        </div>
+        <div class="tab-panel" data-panel="complexes" id="complexes">
+            <div class="cards-grid" id="complexesGrid"></div>
+        </div>
+    </div>
+</section>
+
+<!-- ============ FEATURES (Bento Grid) ============ -->
+<section class="section section--muted" id="info">
+    <div class="container">
+        <div class="reveal">
+            <h2 class="section-title section-title--center">Почему ЮНИЛАБ</h2>
+            <p class="section-subtitle section-subtitle--center">Современный подход к лабораторной диагностике</p>
+        </div>
+        <div class="bento">
+            <div class="bento__card bento__card--accent reveal">
+                <div class="bento__icon">
+                    <svg viewBox="0 0 24 24" width="32" height="32"><path fill="currentColor" d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                </div>
+                <h3 class="bento__title">Точность результатов</h3>
+                <p class="bento__text">Автоматизированные анализаторы и контроль качества по международным стандартам.</p>
+            </div>
+            <div class="bento__card reveal">
+                <div class="bento__icon">
+                    <svg viewBox="0 0 24 24" width="32" height="32"><path fill="currentColor" d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg>
+                </div>
+                <h3 class="bento__title">Быстро</h3>
+                <p class="bento__text">Большинство результатов готово в день обращения. Онлайн-доступ в личном кабинете.</p>
+            </div>
+            <div class="bento__card reveal">
+                <div class="bento__icon">
+                    <svg viewBox="0 0 24 24" width="32" height="32"><path fill="currentColor" d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg>
+                </div>
+                <h3 class="bento__title">Надёжно</h3>
+                <p class="bento__text">Более 20 лет на рынке медицинских услуг. Лицензии и аккредитации.</p>
+            </div>
+            <div class="bento__card bento__card--wide reveal">
+                <div class="bento__icon">
+                    <svg viewBox="0 0 24 24" width="32" height="32"><path fill="currentColor" d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+                </div>
+                <h3 class="bento__title">Удобное мобильное приложение</h3>
+                <p class="bento__text">Заказывайте анализы, отслеживайте результаты и записывайтесь к врачу. Доступно в App Store и Google Play.</p>
+                <div class="bento__apps">
+                    <a href="#" class="store-badge">App Store</a>
+                    <a href="#" class="store-badge">Google Play</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============ ADDRESSES ============ -->
+<section class="section" id="addresses">
+    <div class="container">
+        <div class="reveal">
+            <h2 class="section-title">Наши офисы</h2>
+            <p class="section-subtitle">6 точек приёма анализов во Владивостоке</p>
+        </div>
+        <div class="addresses-grid" id="addressesGrid"></div>
+    </div>
+</section>
+
+<!-- ============ CTA ============ -->
+<section class="cta-band reveal">
+    <div class="container">
+        <div class="cta-band__inner">
+            <div>
+                <h2 class="cta-band__title">Готовы проверить здоровье?</h2>
+                <p class="cta-band__text">Запишитесь онлайн или позвоните нам</p>
+            </div>
+            <div class="cta-band__actions">
+                <a href="#" class="btn btn--filled btn--lg">Записаться онлайн</a>
+                <a href="tel:84232242124" class="btn btn--tonal btn--lg">8 (423) 224-21-24</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============ DISCLAIMER ============ -->
+<div class="disclaimer">
+    <div class="container">
+        <p>Имеются противопоказания. Необходимо получение консультации специалиста.</p>
+    </div>
+</div>
+
+<!-- ============ FOOTER ============ -->
+<footer class="footer">
+    <div class="container">
+        <div class="footer__grid">
+            <div class="footer__col footer__col--brand">
+                <a href="/" class="brand">
+                    <div class="brand__mark">
+                        <svg viewBox="0 0 40 40" width="28" height="28">
+                            <circle cx="20" cy="20" r="16" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.3"/>
+                            <circle cx="20" cy="20" r="11" fill="none" stroke="currentColor" stroke-width="2.5"/>
+                            <path d="M15 14v12M15 14l5 6 5-6v12" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <span class="brand__name">ЮНИЛАБ</span>
+                </a>
+                <p class="footer__about">Сеть клинико-диагностических лабораторий на территории ДВФО и Восточной Сибири.</p>
+                <p class="footer__phone">
+                    <a href="tel:84232242124">8 (423) 224-21-24</a>
+                </p>
+            </div>
+            <div class="footer__col">
+                <h4>Услуги</h4>
+                <ul>
+                    <li><a href="#">Анализы</a></li>
+                    <li><a href="#">Комплексы</a></li>
+                    <li><a href="#">УЗИ</a></li>
+                    <li><a href="#">Приёмы врачей</a></li>
+                    <li><a href="#">Онлайн-запись</a></li>
+                </ul>
+            </div>
+            <div class="footer__col">
+                <h4>Пациентам</h4>
+                <ul>
+                    <li><a href="#">Система скидок</a></li>
+                    <li><a href="#">Подарочные сертификаты</a></li>
+                    <li><a href="#">ОМС и ДМС</a></li>
+                    <li><a href="#">Налоговый вычет</a></li>
+                </ul>
+            </div>
+            <div class="footer__col">
+                <h4>Информация</h4>
+                <ul>
+                    <li><a href="#">О компании</a></li>
+                    <li><a href="#">Адреса</a></li>
+                    <li><a href="#">Врачи</a></li>
+                    <li><a href="#">Вакансии</a></li>
+                    <li><a href="#">Отзывы</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer__bottom">
+            <p>&copy; ЮНИЛАБ, 2003–2026</p>
+            <a href="#">Политика обработки персональных данных</a>
+        </div>
+    </div>
+</footer>
+
+<!-- FAB -->
+<button class="fab" id="fab" aria-label="Наверх">
+    <svg viewBox="0 0 24 24" width="24" height="24"><path fill="currentColor" d="M4 12l1.41 1.41L11 7.83V20h2V7.83l5.58 5.59L20 12l-8-8-8 8z"/></svg>
+</button>
+
+<script src="swiss.js"></script>
+</body>
+</html>

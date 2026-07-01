@@ -8,7 +8,7 @@
     <!-- Preload ALL fonts used by any theme -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Anton&family=Space+Mono:wght@400;700&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Nunito:wght@400;600;700;800;900&family=Quicksand:wght@400;500;600;700&family=Orbitron:wght@400;500;700;900&family=Rajdhani:wght@300;400;500;600;700&family=Share+Tech+Mono&family=Outfit:wght@300;400;500;600;700;800;900&family=Manrope:wght@300;400;500;600;700;800&family=Rubik:wght@400;500;600;700&family=Roboto:wght@300;400;500;700&family=Montserrat:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Anton&family=Space+Mono:wght@400;700&family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&family=Nunito:wght@400;600;700;800;900&family=Quicksand:wght@400;500;600;700&family=Orbitron:wght@400;500;700;900&family=Rajdhani:wght@300;400;500;600;700&family=Share+Tech+Mono&family=Outfit:wght@300;400;500;600;700;800;900&family=Manrope:wght@300;400;500;600;700;800&family=Rubik:wght@400;500;600;700&family=Roboto:wght@300;400;500;700&family=Roboto+Flex:wght@400;500;600;700&family=Roboto+Mono:wght@400;500&family=Montserrat:wght@200;300;400;500;600;700&family=Source+Serif+4:wght@400;500;600&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="css/gallery.css">
 </head>
@@ -28,7 +28,7 @@
 
     <div class="gallery-bar__right">
         <button class="gallery-bar__btn" id="prevTheme" title="Предыдущая тема (←)">◀</button>
-        <span class="gallery-bar__counter" id="themeCounter">1 / 8</span>
+        <span class="gallery-bar__counter" id="themeCounter">1 / 18</span>
         <button class="gallery-bar__btn" id="nextTheme" title="Следующая тема (→)">▶</button>
         <span class="gallery-bar__sep"></span>
         <button class="gallery-bar__btn gallery-bar__btn--expand" id="openFullscreen" title="Открыть в новом окне">↗</button>
@@ -56,6 +56,16 @@ const THEMES = [
     { id: 'brutalist',      name: 'Brutalist',      desc: 'Нео-брутализм' },
     { id: 'neumorphic',     name: 'Neumorphic',     desc: 'Soft UI, неоморфизм' },
     { id: 'supabase',       name: 'Supabase',       desc: 'Dev dashboard эстетика' },
+    { id: 'linear',         name: 'Linear',         desc: 'Linear app, тёмный SaaS' },
+    { id: 'stripe',         name: 'Stripe',         desc: 'Trust-driven fintech' },
+    { id: 'apple-health',   name: 'Apple Health',   desc: 'iOS виджеты здоровья' },
+    { id: 'notion',         name: 'Notion',         desc: 'Блочный минимализм' },
+    { id: 'vercel',         name: 'Vercel',         desc: 'High-contrast геометрия' },
+    { id: 'claymorphism',   name: 'Claymorphism',   desc: 'Мягкий 3D clay' },
+    { id: 'synthwave',      name: 'Synthwave',      desc: 'Ретро 80s, неон' },
+    { id: 'nature',         name: 'Nature',         desc: 'Органика, ботаника' },
+    { id: 'swiss',          name: 'Swiss',          desc: 'Швейцарская типографика' },
+    { id: 'material3',      name: 'Material 3',     desc: 'Material You / M3' },
 ];
 
 const STORAGE_KEY = 'unilab-gallery-theme';
